@@ -30,4 +30,43 @@ exports.create = (req, res) => {
         }
     });
 
-}
+    const channell = new Channell({
+        dSession: mongoose.Types.ObjectId(req.body.session),
+        fullname: req.body.fullname,
+        nic: req.body.nic,
+        email: req.body.email,
+        mobile: req.body.mobile,
+        age: req.body.age,
+        status: "Pending",
+
+    });
+    channell
+        .save(channell)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({
+                message: err.message || "Some error occured while creating your channelling please try again."
+            });
+        });
+
+
+};
+
+// Retrieve all appoitnemnts with id
+exports.findAllByChannellID = (req, res) => {
+    const channellID = req.params.id;
+    Channell.find({chanell_id: channellID})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving chanelling."
+            });
+        });
+};
+
