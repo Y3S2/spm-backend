@@ -80,3 +80,22 @@ exports.findAll = (req, res) => {
             res.status(500).send("Some error occurred while retrieving chanelling.");
         });
 };
+
+// Retrieve all appoitnemnts by search query
+exports.searchByQuery = (req, res) => {
+    const query = req.params.query;
+    const wantedStatus = req.params.status;
+    const mongoQuery = wantedStatus != "All" ?
+        {
+            status: wantedStatus,
+            $or: [{nic: {'$regex': query, '$options': 'i'}}, {fullname: {'$regex': query, '$options': 'i'}}]
+        }
+        : {$or: [{nic: {'$regex': query, '$options': 'i'}}, {fullname: {'$regex': query, '$options': 'i'}}]}
+    Channell.find(mongoQuery).populate('dSession')
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send("Some error occurred while retrieving chanelling.");
+        });
+};
