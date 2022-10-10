@@ -70,3 +70,13 @@ exports.findAllByChannellID = (req, res) => {
         });
 };
 
+// Retrieve all appoitnemnts
+exports.findAll = (req, res) => {
+    Channell.find().populate('dSession')
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send("Some error occurred while retrieving chanelling.");
+        });
+};
