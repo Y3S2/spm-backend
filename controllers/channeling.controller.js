@@ -114,3 +114,88 @@ exports.findAllByStatus = (req, res) => {
             });
         });
 };
+
+//Get the Number of documents in the database
+var getCount = async function (req, res) {
+    var pendingCount = await Channell.countDocuments({status: 'Pending'});
+    var checkedinCount = await Channell.countDocuments({status: 'CheckedIn'});
+    var allCount = await Channell.estimatedDocumentCount();
+
+    const weekData = await Channell.aggregate([
+        {
+            "$lookup": {
+                "from": "sessions",
+                "localField": "dSession",
+                "foreignField": "_id",
+                "as": "session"
+            }
+        },
+        {
+            "$project": {
+                "_id:": 1,
+                "session.date": {
+                    "$dayOfWeek": {
+                        $dateFromString: {
+                            dateString: {$arrayElemAt: ["$session.date", 0]}
+                        }
+                    }
+                },
+
+            }
+        },
+
+        {
+            "$group": {
+                "_id": {$arrayElemAt: ["$session.date", 0]},
+                "count": {$sum: 1},
+            },
+        },
+    ])
+
+    var hasResult = []
+    for (var week of weekData) {
+        hasResult.push(week._id)
+    }
+
+    for (var i = 1; i <= 7; i++) {
+        if (!hasResult.includes(i)) {
+            weekData.push({_id: i, count: 0})
+        }
+    }
+    weekData.sort(function (a, b) {
+        return a._id - b._id;
+    });
+    weekData[0]._id = "Mon"
+    weekData[1]._id = "Tue"
+    weekData[2]._id = "Wed"
+    weekData[3]._id = "Thu"
+    weekData[4]._id = "Fri"
+    weekData[5]._id = "Sat"
+    weekData[6]._id = "Sun"
+
+    const count = {
+        all: {
+            text: "All Appointments",
+            path: "/staff/receptionist/allappointments",
+            number: allCount,
+        },
+        pending: {
+            text: "Pending",
+            path: "/staff/receptionist/pendingappointments",
+            number: pendingCount,
+        },
+        checkedin: {
+            text: "Checked-In",
+            path: "/staff/receptionist/checkedinappointments",
+            number: checkedinCount,
+        }
+    }
+
+    const sendData = {
+        count: {...count},
+        week: {weekData},
+    }
+    res.send(sendData);
+}
+;
+exports.getCount = getCount;
