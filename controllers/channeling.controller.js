@@ -99,3 +99,18 @@ exports.searchByQuery = (req, res) => {
             res.status(500).send("Some error occurred while retrieving chanelling.");
         });
 };
+
+// Retrieve all appoitnemnts by appointment status (Pending/CheckedIn)
+exports.findAllByStatus = (req, res) => {
+    const wantedStatus = req.params.status
+    Channell.find({status: wantedStatus}).populate('dSession')
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving chanelling."
+            });
+        });
+};
