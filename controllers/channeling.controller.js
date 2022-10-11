@@ -199,3 +199,22 @@ var getCount = async function (req, res) {
 }
 ;
 exports.getCount = getCount;
+
+// Update a channelling by the id and status in the request
+exports.updateStatus = (req, res) => {
+    const ID = req.params.id.toString();
+    const newStatus = req.params.status.toString();
+    Channell.updateOne(
+        {_id: ID},
+        {status: newStatus},
+    )
+        .then(response => {
+            if (response.nModified > 0)
+                res.status(200).send("Successfully Updated")
+            else
+                res.status(400).send("0 rows updated");
+        })
+        .catch(err => {
+            res.send("Error update");
+        });
+};
