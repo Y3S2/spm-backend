@@ -218,3 +218,13 @@ exports.updateStatus = (req, res) => {
             res.send("Error update");
         });
 };
+
+// Delete a channelling with the specified id in the request
+exports.delete = (req, res) => {
+
+};
+
+// Delete all channells from the database.
+exports.deleteAll = (req, res) => {
+
+};
