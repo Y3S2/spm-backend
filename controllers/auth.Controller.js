@@ -4,6 +4,20 @@ const Employee = db.employees;
 
 var jwt = require("jsonwebtoken");
 
+exports.signin = (req, res) => {
+  Employee.findOne({
+    email: req.body.email,
+    password:req.body.password
+  })
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      if (!user) {
+        return res.status(404).send({ message: "User Not found." });
+      }
 
       var passwordIsValid = () => {
         if(req.body.password == user.password)
