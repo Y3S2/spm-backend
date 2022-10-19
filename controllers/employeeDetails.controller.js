@@ -58,18 +58,42 @@ exports.create = (req, res) => {
     });
 };
 
-
-//retrive a single employee detail
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  EmpDetails.findById(id)
+// Retrieve all Employee details with matching emp ID from the database.
+exports.findAllByEmpID = (req, res) => {
+  const empID = req.params.id;
+  EmpDetails.find({ emp_id: empID })
     .then((data) => {
-      if (!data)
-        res.status(404).send({ message: "Not found test with id " + id });
-      else res.send(data);
+      res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({ message: "Error retrieving test with id=" + id });
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving sessions.",
+      });
+    });
+};
+
+// Delete a form with the specified id in the request
+exports.delete = async (req, res) => {
+  let Id = req.params.id;
+  await EmpDetails.findOneAndDelete({ _id: Id })
+    .then(() => {
+      res.status(200).send({ status: "user deleted" });
+    })
+    .catch((e) => {
+      console.log(e);
+      res.status(400).send({ status: "error in delete operation" });
+    });
+};
+
+// Retrieve all emp details from the database.
+exports.getAll = (req, res) => {
+  EmpDetails.find()
+    .then((data) => {
+      res.json(data);
+
+    })
+    .catch((err) => {
+      alert(err);
     });
 };
