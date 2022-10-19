@@ -97,3 +97,22 @@ exports.getAll = (req, res) => {
       alert(err);
     });
 };
+
+// Retrieve all Doctors from the database.
+exports.getAllDoctors = (req, res) => {
+    EmpDetails.find( { role : 'Doctor' } )
+        .then(data => {
+            res.send(data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+// Update an Emp detail by the id in the request
+exports.update = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Data to update can not be empty!",
+    });
+  }
