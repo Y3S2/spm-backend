@@ -116,3 +116,50 @@ exports.update = (req, res) => {
       message: "Data to update can not be empty!",
     });
   }
+
+  const id = req.params.id;
+
+  EmpDetails.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update emp details with id=${id}. Maybe emp details was not found!`,
+        });
+      } else res.send({ message: "emp details was updated successfully." });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating emp form with id=" + id,
+      });
+    });
+};
+
+// Delete an empform  with the specified Id in the request
+exports.delete = (req, res) => {
+  const ID = req.params.id;
+  EmpDetails.deleteOne({ _id: ID })
+    .then((response) => {
+      res.send(response);
+      //console.log(response);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Error occured couldn't delete item.",
+      });
+    });
+};
+
+//retrive a single employee detail
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  EmpDetails.findById(id)
+    .then((data) => {
+      if (!data)
+        res.status(404).send({ message: "Not found test with id " + id });
+      else res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error retrieving test with id=" + id });
+    });
+};
