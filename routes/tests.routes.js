@@ -17,4 +17,7 @@ module.exports = app => {
 
     // Create a new tests
     router.post("/", tests.create);
+
+    //geta all test details
+    router.get("/", tests.getAll);
 };
