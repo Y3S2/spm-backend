@@ -32,4 +32,9 @@ module.exports = app => {
 
     // Delete a test with id
     router.delete("/:id", tests.delete);
+
+    // Retrieve a single test with id
+    router.get("/:id", tests.findOne);
+
+    app.use('/api/tests', router);
 };
