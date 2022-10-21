@@ -6,5 +6,10 @@ module.exports = app => {
     // Retrieve all subbmitted tests
     router.get("/subbmitted", tests.findAllSubbmitted);
 
+    // Create a new tests
+    router.post("/", tests.create);
+
+    // Retrieve all compleetd tests
+    router.get("/completed", tests.findAllCompleted);
 
 };
