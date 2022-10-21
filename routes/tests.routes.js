@@ -12,4 +12,8 @@ module.exports = app => {
     // Retrieve all compleetd tests
     router.get("/completed", tests.findAllCompleted);
 
+    // Retrieve all started tests
+    router.get("/started", tests.findAllStarted);
+    
+
 };
