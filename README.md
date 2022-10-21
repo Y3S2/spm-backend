@@ -1,6 +1,6 @@
 # spm-backend
 
-This is the API gut hub repository for Hospital MS web application.
+This is the API git hub repository for Hospital MS web application.
 
 ## Contributors
 * IT20151874 - Madhushanka Waththaldeniya - [Madusanka-w](https://github.com/Madusanka-w)
