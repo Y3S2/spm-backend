@@ -29,4 +29,7 @@ module.exports = app => {
 
     //Update a test with id
     router.put("/:id", tests.update);
+
+    // Delete a test with id
+    router.delete("/:id", tests.delete);
 };
