@@ -23,4 +23,7 @@ module.exports = app => {
 
     //retrive a single test when specimen id and contact number correct
     router.get("/client", tests.client);
+
+    //retrive a single test when specimen id and contact number correct
+    router.get("/stats", tests.getstat);
 };
