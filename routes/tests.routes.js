@@ -20,4 +20,7 @@ module.exports = app => {
 
     //geta all test details
     router.get("/", tests.getAll);
+
+    //retrive a single test when specimen id and contact number correct
+    router.get("/client", tests.client);
 };
